@@ -9,5 +9,3 @@ Caused by: java.lang.IllegalAccessError: tried to access method com.google.commo
 	at org.apache.hadoop.hbase.zookeeper.MetaTableLocator.blockUntilAvailable(MetaTableLocator.java:559)
 
 This problem has been reported both on the Titan forums as well as the HBase forums.
-
- 
