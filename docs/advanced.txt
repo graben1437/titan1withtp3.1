@@ -1,0 +1,21 @@
+[[titan-advanced]]
+Advanced Topics
+===============
+
+include::advschema.txt[]
+
+include::eventualconsistency.txt[]
+
+include::recovery.txt[]
+
+include::reindex.txt[]
+
+include::bulkloading.txt[]
+
+//include::multiquery.txt[]
+
+include::partitioning.txt[]
+
+include::serializer.txt[]
+
+include::hadoop.txt[]

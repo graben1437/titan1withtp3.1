@@ -1,0 +1,389 @@
+[[solr]]
+Solr
+----
+
+
+[quote, 'http://lucene.apache.org/solr/[Solr Homepage]']
+Solr is the popular, blazing fast open source enterprise search platform from the Apache Lucene project. Solr is a standalone enterprise search server with a REST-like API. Solr is highly reliable, scalable and fault tolerant, providing distributed indexing, replication and load-balanced querying, automated failover and recovery, centralized configuration and more.
+
+Titan supports http://lucene.apache.org/solr/[Solr] as an index backend.  Here are some of the Solr features supported by Titan:
+
+* *Full-Text*: Supports all `Text` predicates to search for text properties that matches a given word, prefix or regular expression.
+* *Geo*: Supports the `Geo.WITHIN` condition to search for points that fall within a given circle. Only supports points for indexing and circles for querying.
+* *Numeric Range*: Supports all numeric comparisons in `Compare`.
+* *TTL*: Supports automatically expiring indexed elements.
+* *Temporal*: Millisecond granularity temporal indexing.
+
+Please see <<version-compat>> for details on what versions of Solr will work with Titan.
+
+Solr Configuration Overview
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Connecting to Solr
+^^^^^^^^^^^^^^^^^^
+
+Titan supports Solr running in either a SolrCloud or HTTP configuration. The desired connection mode is configured via the parameter `mode` which must be set to either `http` or `cloud`, the latter being the default value.  For example, to explicitly specify that Solr is running in a SolrCloud configuration the following property is specified as a Titan configuration property: index.search.solr.mode=cloud where 'search' is the name of the Solr index.
+
+
+Connecting to SolrCloud
++++++++++++++++++++++++
+
+When connecting to a SolrCloud enabled cluster by setting the `mode` equal to `cloud`, the Zookeeper URL (and optionally port) must be specified so that Titan can discover and interact with the Solr cluster.
+
+[source, properties]
+----
+index.search.backend=solr
+index.search.solr.mode=cloud
+index.search.solr.zookeeper-url=localhost:2181
+----
+
+A number of additional configuration options pertaining to the creation of new collections (which is only supported in SolrCloud operation mode) can be configured to control sharding behavior among other things. Refer to the <<titan-config-ref>> for a complete listing of those options.
+
+
+Connecting via HTTP
++++++++++++++++++++
+
+When connecting to Solr via HTTP by setting the `mode` equal to `http` a single or list of URLs for the Solr instances must be provided.
+
+[source, properties]
+----
+index.search.backend=solr
+index.search.solr.mode=http
+index.search.solr.http-urls=http://localhost:8983/solr
+----
+
+Additional configuration options for controlling the maximum number of connections, connection timeout and transmission compression are available for the HTTP mode. Refer to the <<titan-config-ref>> for a complete listing of those options.
+
+Solr Collections
+^^^^^^^^^^^^^^^^
+
+.Note:
+[NOTE]
+Solr documentation makes a distinction between the terms *core* and *configuration set*.  For the purposes of configuring Titan to work with Solr, the terms are used interchangeably.  
+
+Collection Initialization
++++++++++++++++++++++++++
+
+SolrCloud leverages Zookeeper to coordinate Solr *configuration sets* and *collection* information between instances of Solr.  Solr HTTP, because it is a single instance, keeps *configuration set* information exclusively on the file system. The use of Zookeeper with SolrCloud provides the opportunity to significantly reduce the amount of manual configuration required to use Solr as a back end index for Titan.
+
+
+
+Using Solr in SolrCloud Configuration
++++++++++++++++++++++++++++++++++++++
+
+When a <<index-mixed>> is defined for a graph, Titan creates a new *collection* in Solr that matches the index name. In order to create a new collection, Solr requires that a *configuration set* be defined that specifies the schema (schema.xml and other files) to be used for the collection. The Titan distribution contains a default configuration set.  The Titan provided configuration set must be manually copied from where Titan is installed to one of the Solr nodes in the SolrCloud.
+
+To copy the default configuration set (core) provided by Titan to a Solr node:
+
+* Identify the target Solr machine where the configuration files will be copied.
+* Create a new *configuration set* directory under the "solr" directory.  If using the default Solr installation:
++
+$SOLR_HOME/server/solr/configsets/{config_set}
+* Copy the contents, including the subdirectories, of titan/conf/solr under $SOLR_HOME/server/solr/configsets/{config_set}/
+
+Next, the default configuration set must be loaded into Zookeeper.  There are two recommended ways to accomplish this:
+
+
+Option 1:
+
+. After performing the manual copy of the configuration set:
++
+open the Solr web interface and select Core Admin->Add Core (remember *core* is the same as *configuration set* for our purposes)
+. Change the name and instance dir to match your {config_set} name
+. Finish by clicking 'Add Core'
+
+Option 2:
+
+. After performing the manual copy of the configuration set:
+. Use the Solr command line to load a configuration set and the first collection (index) that your application will define:
++
+$JAVA_HOME/bin/java -Dsolr.install.dir=$SOLR_HOME -Dlog4j.configuration=file:$SOLR_HOME/server/scripts/cloud-scripts/log4j.properties
+-classpath $SOLR_HOME/server/solr-webapp/webapp/WEB-INF/lib/\*:$SOLR_HOME/server/lib/ext/\* org.apache.solr.util.SolrCLI create_collection -name {index name} -shards 2
+-replicationFactor 1 -confname {config_set} -confdir {config_set} -configsetsDir $SOLR_HOME/server/solr/configsets -solrUrl http://<solrhostname>:8983/solr
+
+
+Titan provides an index.[X].solr.configset configuration property that, if specified, allows Titan to re-use a single configuration set for all the collections (index) it creates. To use this property, specify it in the Titan configuration parameters, and set the value to the name of the {config_set} manually copied per the above steps.
+
+
+[source, properties]
+----
+index.search.solr.configset=titanconfigset
+----
+
+In the above example, the default Titan configuration set files would be copied to one solr node under: $SOLR_HOME/server/solr/configsets/titanconfigset
+
+Use of the configset property provides two significant benefits:
+
+. After performing the manual steps above to configure the first configuration set in Zookeeper, no more manual steps are required for additional mixed index definitions.  New mixed indexes may be defined using mgmt commands, using any index name desired.
+. Only a single configuration set is loaded into Zookeeper, significantly decreasing the amount of data potentially stored in Zookeeper for SolrCloud.
+
+If the property is not specified, then the manual configuration process must be followed for each new mixed index that is defined in Solr.
+
+
+Using Solr in HTTP Configuration
+++++++++++++++++++++++++++++++++
+
+To create a new core that is compatible with Titan:
+
+* Identify the target Solr machine where the configuration files will be copied.
+* Create a new *configuration set* directory under the "solr" directory.  If
+* using the default Solr installation:
++
+$SOLR_HOME/server/solr/configsets/{config_set}
+* Copy the contents, including the subdirectories, of titan/conf/solr under $SOLR_HOME/server/solr/configsets/{config_set}/
+
+The core_name must match the index name used to build the index and you will need to create a new core, following the steps above, for each unique index.
+
+[source, gremlin]
+----
+mgmt.buildIndex('{core_name}', Vertex.class).addKey(name).buildMixedIndex('search')
+----
+
+Dynamic Field Definition
+++++++++++++++++++++++++
+
+By default, Titan uses Solr's https://cwiki.apache.org/confluence/display/solr/Dynamic+Fields[Dynamic Fields] feature to define the field types for all indexed keys. This requires no extra configuration when adding property keys to a mixed index backed by Solr and provides better performance than schemaless mode.
+
+Titan assumes the following dynamic field tags are defined in the backing Solr collection's schema.xml file. Please note that there
+is additional xml definition of the following fields required in a solr schema.xml file in order to use them.  Reference the example schema.xml file provided in the ./conf/solr/schema.xml directory in a Titan installation for more information.
+
+[source, xml]
+----
+   <dynamicField name="*_i"    type="int"          indexed="true"  stored="true"/>
+   <dynamicField name="*_s"    type="string"       indexed="true"  stored="true" />
+   <dynamicField name="*_l"    type="long"         indexed="true"  stored="true"/>
+   <dynamicField name="*_t"    type="text_general" indexed="true"  stored="true"/>
+   <dynamicField name="*_b"    type="boolean"      indexed="true" stored="true"/>
+   <dynamicField name="*_f"    type="float"        indexed="true"  stored="true"/>
+   <dynamicField name="*_d"    type="double"       indexed="true"  stored="true"/>
+   <dynamicField name="*_g"    type="geo"          indexed="true"  stored="true"/>
+   <dynamicField name="*_dt"   type="date"         indexed="true"  stored="true"/>
+   <dynamicField name="*_uuid" type="uuid"         indexed="true"  stored="true"/>
+
+----
+
+In Titan's default configuration, property key names do not have to end with the type-appropriate suffix to take advantage of Solr's dynamic field feature.  Titan generates the Solr field name from the property key name by encoding the property key definition's numeric identifier and the type-appropriate suffix.  This means that Titan uses synthetic field names with type-appropriate suffixes behind the scenes, regardless of the property key names defined and used by application code using Titan.  This field name mapping can be overridden through non-default configuration.  That's described in the next section. 
+
+Manual Field Definition
++++++++++++++++++++++++
+
+If the user would rather manually define the field types for each of the indexed fields in a collection, the configuration option `dyn-fields` needs to be disabled.  It is important that the field for each indexed property key is defined in the backing Solr schema before the property key is added to the index.
+
+In this scenario, it is advisable to enable explicit property key name to field mapping in order to fix the field names for their explicit definition. This can be achieved in one of two ways:
+
+. Configuring the name of the field by providing a `mapped-name` parameter when adding the property key to the index. See <<index-local-field-mapping>> for more information.
+. By enabling the `map-name` configuration option for the Solr index which will use the property key name as the field name in Solr. See <<index-global-field-mapping>> for more information.
+
+Schemaless Mode
++++++++++++++++
+
+Titan can also interact with a SolrCloud cluster that is configured for https://cwiki.apache.org/confluence/display/solr/Schemaless+Mode[schemaless mode]. In this scenario, the configuration option `dyn-fields` should be disabled since Solr will infer the field type from the values and not the field name.
+
+Note, however, that schemaless mode is recommended only for prototyping and initial application development and NOT recommended for production use. 
+
+Troubleshooting
+~~~~~~~~~~~~~~~
+
+Collection Does Not Exist
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The collection (and all of the required configuration files) must be initialized before a defined index can use the collection.
+
+When using SolrCloud, the Zookeeper zkCli.sh command line tool can be used to inspect the configurations loaded into Zookeeper.  Also verify that
+the default Titan configuration files are copied to the correct location under solr and that the directory where the files are copied is correct.
+
+Connection Problems
+^^^^^^^^^^^^^^^^^^^
+
+Irrespective of the operation mode, a Solr instance or a cluster of Solr instances must be running and accessible from the Titan instance(s) in order for Titan to use Solr as an indexing backend. Check that the Solr cluster is running correctly and that it is visible and accessible over the network (or locally) from the Titan instances.
+
+
+JTS ClassNotFoundException with Geo Data
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Solr relies on Spatial4j for geo processing.  Spatial4j declares an optional dependency on JTS ("JTS Topology Suite").  JTS is required for some geo field definition and query functionality.  If the JTS jar is not on the Solr daemon's classpath and a field in schema.xml uses a geo type, then Solr may throw a ClassNotFoundException on one of the missing JTS classes.  The exception can appear when starting Solr using a schema.xml file designed to work with Titan, but can also appear when invoking `CREATE` in the https://wiki.apache.org/solr/CoreAdmin[Solr CoreAdmin API].  The exception appears in slightly different formats on the client and server sides, although the root cause is identical.
+
+Here's a representative example from a Solr server log:
+
+[source, text]
+----
+ERROR [http-8983-exec-5] 2014-10-07 02:54:06, 665 SolrCoreResourceManager.java (line 344) com/vividsolutions/jts/geom/Geometry
+java.lang.NoClassDefFoundError: com/vividsolutions/jts/geom/Geometry
+        at com.spatial4j.core.context.jts.JtsSpatialContextFactory.newSpatialContext(JtsSpatialContextFactory.java:30)
+        at com.spatial4j.core.context.SpatialContextFactory.makeSpatialContext(SpatialContextFactory.java:83)
+        at org.apache.solr.schema.AbstractSpatialFieldType.init(AbstractSpatialFieldType.java:95)
+        at org.apache.solr.schema.AbstractSpatialPrefixTreeFieldType.init(AbstractSpatialPrefixTreeFieldType.java:43)
+        at org.apache.solr.schema.SpatialRecursivePrefixTreeFieldType.init(SpatialRecursivePrefixTreeFieldType.java:37)
+        at org.apache.solr.schema.FieldType.setArgs(FieldType.java:164)
+        at org.apache.solr.schema.FieldTypePluginLoader.init(FieldTypePluginLoader.java:141)
+        at org.apache.solr.schema.FieldTypePluginLoader.init(FieldTypePluginLoader.java:43)
+        at org.apache.solr.util.plugin.AbstractPluginLoader.load(AbstractPluginLoader.java:190)
+        at org.apache.solr.schema.IndexSchema.readSchema(IndexSchema.java:470)
+        at com.datastax.bdp.search.solr.CassandraIndexSchema.readSchema(CassandraIndexSchema.java:72)
+        at org.apache.solr.schema.IndexSchema.<init>(IndexSchema.java:168)
+        at com.datastax.bdp.search.solr.CassandraIndexSchema.<init>(CassandraIndexSchema.java:54)
+        at com.datastax.bdp.search.solr.core.CassandraCoreContainer.create(CassandraCoreContainer.java:210)
+        at com.datastax.bdp.search.solr.core.SolrCoreResourceManager.createCore(SolrCoreResourceManager.java:256)
+        at com.datastax.bdp.search.solr.handler.admin.CassandraCoreAdminHandler.handleCreateAction(CassandraCoreAdminHandler.java:117)
+        ...
+----
+
+Here's what normally appears in the output of the client that issued the associated `CREATE` command to the CoreAdmin API:
+
+[source, text]
+----
+org.apache.solr.common.SolrException: com/vividsolutions/jts/geom/Geometry
+        at com.datastax.bdp.search.solr.core.SolrCoreResourceManager.createCore(SolrCoreResourceManager.java:345)
+        at com.datastax.bdp.search.solr.handler.admin.CassandraCoreAdminHandler.handleCreateAction(CassandraCoreAdminHandler.java:117)
+        at org.apache.solr.handler.admin.CoreAdminHandler.handleRequestBody(CoreAdminHandler.java:152)
+        ...
+----
+
+This is resolved by adding the JTS jar to the classpath of the Solr server. In many cases, if using a version of Solr that matches the version of Solr supported by Titan, the JTS jar file, for example: jts-1.13.jar, may be copied from the Titan ./lib directory to the Solr classpath.  If using Solr's built in web server, the JTS jar may be copied to the example/solr-webapp/webapp/WEB-INF/lib directory to include it in the classpath.  Solr can be restarted, and the exception should be gone. Solr must be started once with the correct schema.xml file in place first, for the example/solr-webapp/webapp/WEB-INF/lib directory to exist.
+
+To determine the ideal JTS version, first check the version of Spatial4j in use by the Solr cluster, then determine the version of JTS against which that Spatial4j version was compiled.  Spatial4j declares its target JTS version in the http://search.maven.org/#search|gav|1|g%3A%22com.spatial4j%22%20AND%20a%3A%22spatial4j%22[pom for the `com.spatial4j:spatial4j` artifact].
+Copy the jts jar to the server/solr-webapp/webapp/WEB-INF/lib directory in your solr installation.
+
+Advanced Solr Configuration
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+[[dse-search]]
+DSE Search
+^^^^^^^^^^
+
+This section covers installation and configuration of Titan with DataStax Enterprise (DSE) Search.  There are multiple ways to install DSE, but this section focuses on DSE's binary tarball install option on Linux.  Most of the steps in this section can be generalized to the other install options for DSE.
+
+Install DataStax Enterprise as directed by the page http://www.datastax.com/documentation/datastax_enterprise/4.5/datastax_enterprise/install/installTARdse.html[Installing DataStax Enterprise using the binary tarball].
+
+Export `DSE_HOME` and append to `PATH` in your shell environment.  Here's an example using Bash syntax:
+
+[source, bourne]
+export DSE_HOME=/path/to/dse-version.number
+export PATH="$DSE_HOME"/bin:"$PATH"
+
+Install JTS for Solr.  The appropriate version varies with the Spatial4j version.  As of DSE 4.5.2, the appropriate version is 1.13.
+
+[source, bourne]
+----
+cd $DSE_HOME/resources/solr/lib
+curl -O 'http://central.maven.org/maven2/com/vividsolutions/jts/1.13/jts-1.13.jar'
+----
+
+Start DSE Cassandra and Solr in a single background daemon:
+
+[source, bourne]
+----
+# The "dse-data" path below was chosen to match the 
+# "Installing DataStax Enterprise using the binary tarball"
+# documentation page from DataStax.  The exact path is not
+# significant.
+dse cassandra -s -Ddse.solr.data.dir="$DSE_HOME"/dse-data/solr
+----
+
+The previous command will write some startup information to the console and to the logfile path `log4j.appender.R.File` configured in `$DSE_HOME/resources/cassandra/conf/log4j-server.properties`.
+
+Once DSE with Cassandra and Solr has started normally, check the cluster health with `nodetool status`.  A single-instance ring should show one node with flags *U*p and *N*ormal:
+
+[source, bourne]
+----
+nodetool status
+Note: Ownership information does not include topology; for complete information, specify a keyspace
+Datacenter: Solr
+================
+Status=Up/Down
+|/ State=Normal/Leaving/Joining/Moving
+--  Address    Load       Owns   Host ID                               Token                                    Rack
+UN  127.0.0.1  99.89 KB   100.0%  5484ef7b-ebce-4560-80f0-cbdcd9e9f496  -7317038863489909889                     rack1
+----
+
+Next, switch to `gremlin.sh` and open a Titan database against the DSE instance.  This will create Titan's keyspace and column families.
+[source, gremlin]
+----
+cd $TITAN_HOME
+bin/gremlin.sh 
+
+         \,,,/
+         (o o)
+-----oOOo-(3)-oOOo-----
+gremlin> graph = TitanFactory.open('conf/titan-cassandra-solr.properties')
+==>titangraph[cassandrathrift:[127.0.0.1]]
+gremlin> g = graph.traversal()
+==>graphtraversalsource[titangraph[cassandrathrift:[127.0.0.1]], standard]
+gremlin>
+----
+
+Keep this `gremlin.sh` shell open.  We'll take a break now to install
+a Solr core.  Then we'll come back to this shell to load some sample
+data.
+
+Next, upload configuration files for Titan's Solr collection, then
+create the core in DSE:
+
+[source, bourne]
+----
+# Change to the directory where Titan was extracted.  Later commands
+# use relative paths to the Solr config files shipped with the Titan
+# distribution.
+cd $TITAN_HOME
+
+# The name must be URL safe and should contain one dot/full-stop
+# character. The part of the name after the dot must not conflict with
+# any of Titan's internal CF names.  Starting the part after the dot
+# "solr" will avoid a conflict with Titan's internal CF names.
+CORE_NAME=titan.solr1
+# Where to upload collection configuration and send CoreAdmin requests.
+SOLR_HOST=localhost:8983
+
+# The value of index.[X].solr.http-urls in Titan's config file
+# should match $SOLR_HOST and $CORE_NAME.  For example, given the
+# $CORE_NAME and $SOLR_HOST values above, Titan's config file would
+# contain (assuming "search" is the desired index alias):
+#
+# index.search.solr.http-urls=http://localhost:8983/solr/titan.solr1
+#
+# The stock Titan config file conf/titan-cassandra-solr.properties
+# ships with this http-urls value.
+
+# Upload Solr config files to DSE Search daemon
+for xml in conf/solr/{solrconfig, schema, elevate}.xml ; do
+    curl -v http://"$SOLR_HOST"/solr/resource/"$CORE_NAME/$xml" \
+      --data-binary @"$xml" -H 'Content-type:text/xml; charset=utf-8'
+done
+for txt in conf/solr/{protwords, stopwords, synonyms}.txt ; do
+    curl -v http://"$SOLR_HOST"/solr/resource/"$CORE_NAME/$txt" \
+      --data-binary @"$txt" -H 'Content-type:text/plain; charset=utf-8'
+done
+sleep 5
+
+# Create core using the Solr config files just uploaded above
+curl "http://"$SOLR_HOST"/solr/admin/cores?action=CREATE&name=$CORE_NAME"
+sleep 5
+
+# Retrieve and print the status of the core we just created
+curl "http://localhost:8983/solr/admin/cores?action=STATUS&core=$CORE_NAME"
+----
+
+Now the Titan database and backing Solr core are ready for use.  We
+can test it out with the <<getting-started, Graph of the Gods>>
+dataset.  Picking up the gremlin.sh session started above:
+
+[source, gremlin]
+----
+// Assuming graph = TitanFactory.open('conf/titan-cassandra-solr.properties')...
+gremlin> GraphOfTheGodsFactory.load(graph)
+==>null
+----
+
+Now we can run any of the queries described in <<getting-started>>.
+Queries involving text and geo predicates will be served by Solr.  For
+more verbose reporting from Titan and the Solr client, run `gremlin.sh
+-l DEBUG` and issue some index-backed queries.
+
+///////////
+
+Hadoop Search
+^^^^^^^^^^^^^
+
+tbw
+
+///////////

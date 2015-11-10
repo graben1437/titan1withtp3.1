@@ -1,0 +1,13 @@
+StandardTransactionBuilder setting lI: kafkaproducer
+StandardTransactionBuilder logIdentifier set: kafkaproducer
+StandardTransactionBuilder setting lI: kafkaproducer
+StandardTransactionBuilder logIdentifier set: kafkaproducer
+StandardTransactionBuilder setting lI: kafkaproducer
+StandardTransactionBuilder logIdentifier set: kafkaproducer
+StandardTransactionBuilder setting lI: kafkaproducer
+StandardTransactionBuilder logIdentifier set: kafkaproducer
+StandardTransactionBuilder setting lI: kafkaproducer
+StandardTransactionBuilder logIdentifier set: kafkaproducer
+StandardTransactionBuilder setting lI: kafkaproducer
+StandardTransactionBuilder logIdentifier set: kafkaproducer
+setting properties on rel:312325 racoons
