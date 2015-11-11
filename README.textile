@@ -9,7 +9,7 @@ SparkGraphComputer was tested with both HBase and Cassandra.
 HBase has an intermittent problem shown below.
 This problem has been reported both on the Titan forums as well as the HBase forums in the past.
 
-````
+```
 Caused by: java.lang.IllegalAccessError: tried to access method com.google.common.base.Stopwatch.<init>()V from class org.apache.hadoop.hbase.zookeeper.MetaTableLocator
 	at org.apache.hadoop.hbase.zookeeper.MetaTableLocator.blockUntilAvailable(MetaTableLocator.java:596)
 	at org.apache.hadoop.hbase.zookeeper.MetaTableLocator.blockUntilAvailable(MetaTableLocator.java:580)
