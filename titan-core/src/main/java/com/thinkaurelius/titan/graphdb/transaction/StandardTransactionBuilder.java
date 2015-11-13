@@ -84,7 +84,6 @@ public class StandardTransactionBuilder implements TransactionConfiguration, Tra
         this.assignIDsImmediately = graphConfig.hasFlushIDs();
         this.forceIndexUsage = graphConfig.hasForceIndexUsage();
         this.groupName = graphConfig.getMetricsPrefix();
-        this.logIdentifier = null;
         this.propertyPrefetching = graphConfig.hasPropertyPrefetching();
         this.writableCustomOptions = GraphDatabaseConfiguration.buildGraphConfiguration();
         this.customOptions = new MergedConfiguration(writableCustomOptions, graphConfig.getConfiguration());
@@ -92,16 +91,11 @@ public class StandardTransactionBuilder implements TransactionConfiguration, Tra
         dirtyVertexSize(graphConfig.getTxDirtyVertexSize());
 
         // KAFKA PRODUCER
+        this.logIdentifier = null;
         boolean logAll = graphConfig.getLogAllTransactions();
 
-        if (logAll)
-        {
+        if (logAll) {
             this.logIdentifier = graphConfig.getAllLogTransactionName();
-
-        }
-        else
-        {
-            this.logIdentifier = null;
         }
     }
 
@@ -115,8 +109,6 @@ public class StandardTransactionBuilder implements TransactionConfiguration, Tra
         this.assignIDsImmediately = graphConfig.hasFlushIDs();
         this.forceIndexUsage = graphConfig.hasForceIndexUsage();
         this.groupName = graphConfig.getMetricsPrefix();
-
-        this.logIdentifier = null;
         this.propertyPrefetching = graphConfig.hasPropertyPrefetching();
         this.writableCustomOptions = null;
         this.customOptions = customOptions;
@@ -125,16 +117,12 @@ public class StandardTransactionBuilder implements TransactionConfiguration, Tra
 
 
         // KAFKA PRODUCER
+        this.logIdentifier = null;
         boolean logAll = graphConfig.getLogAllTransactions();
 
-        if (logAll)
-        {
+        if (logAll) {
             this.logIdentifier = graphConfig.getAllLogTransactionName();
 
-        }
-        else
-        {
-            this.logIdentifier = null;
         }
     }
 
