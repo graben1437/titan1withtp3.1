@@ -202,6 +202,17 @@ public class GraphDatabaseConfiguration {
             "Whether the transaction recovery system should print recovered transactions and other activity to standard output",
             ConfigOption.Type.MASKABLE, false);
 
+    // DAVID NEW FOR KAFKA PRODUCER
+    public static final ConfigOption<Boolean> REPORT_ALL_TX = new ConfigOption<Boolean>(TRANSACTION_NS, "report-all-transactions",
+            "Whether all transactions, auto or manual should be reported as a named transaction to the logging system",
+            ConfigOption.Type.MASKABLE, false);
+
+    // DAVID NEW FOR KAFKA PRODUCER
+    public static final ConfigOption<String> TX_TRANS_LOG_NAME = new ConfigOption<String>(TRANSACTION_NS, "logidentifier-name",
+            "The name of the user transaction log to use that matches the Kafka producer listeners log.",
+            ConfigOption.Type.MASKABLE, "kafkaproducer");
+
+
     // ################ Query Processing #######################
     // ################################################
 
@@ -1303,6 +1314,12 @@ public class GraphDatabaseConfiguration {
     private Boolean useMultiQuery;
     private boolean allowVertexIdSetting;
     private boolean logTransactions;
+
+    // DAVID KAFKA PRODUCER
+    private boolean logAllTransactions;
+    // DAVID KAFKA PRODUCER
+    private String allTransactionLogName;
+
     private String metricsPrefix;
     private String unknownIndexKeyName;
 
@@ -1573,6 +1590,12 @@ public class GraphDatabaseConfiguration {
         allowVertexIdSetting = configuration.get(ALLOW_SETTING_VERTEX_ID);
         logTransactions = configuration.get(SYSTEM_LOG_TRANSACTIONS);
 
+        // DAVID KAFKA PRODUCER
+        logAllTransactions = configuration.get(REPORT_ALL_TX);
+        // DAVID KAFKA PRODUCER
+        allTransactionLogName = configuration.get(TX_TRANS_LOG_NAME);
+
+
         unknownIndexKeyName = configuration.get(IGNORE_UNKNOWN_INDEX_FIELD) ? UKNOWN_FIELD_NAME : null;
 
         configureMetrics();
@@ -1729,6 +1752,16 @@ public class GraphDatabaseConfiguration {
 
     public String getUnknownIndexKeyName() {
         return unknownIndexKeyName;
+    }
+
+    // DAVID KAFKA PRODUCER
+    public boolean getLogAllTransactions() {
+         return logAllTransactions;
+    }
+
+    // DAVID KAFKA PRODUCER
+    public String getAllLogTransactionName() {
+         return allTransactionLogName;
     }
 
     public boolean hasLogTransactions() {

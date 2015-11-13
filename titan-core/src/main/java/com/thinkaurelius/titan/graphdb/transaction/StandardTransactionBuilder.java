@@ -2,6 +2,17 @@ package com.thinkaurelius.titan.graphdb.transaction;
 
 import static com.thinkaurelius.titan.graphdb.configuration.GraphDatabaseConfiguration.ROOT_NS;
 
+//DAVID KAFKA DEBUG
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
+import java.util.Arrays;
+
 import java.time.Instant;
 import java.util.concurrent.TimeUnit;
 
@@ -90,6 +101,19 @@ public class StandardTransactionBuilder implements TransactionConfiguration, Tra
         this.customOptions = new MergedConfiguration(writableCustomOptions, graphConfig.getConfiguration());
         vertexCacheSize(graphConfig.getTxVertexCacheSize());
         dirtyVertexSize(graphConfig.getTxDirtyVertexSize());
+
+        // KAFKA PRODUCER
+        boolean logAll = graphConfig.getLogAllTransactions();
+
+        if (logAll)
+        {
+            this.logIdentifier = graphConfig.getAllLogTransactionName();
+
+        }
+        else
+        {
+            this.logIdentifier = null;
+        }
     }
 
     public StandardTransactionBuilder(GraphDatabaseConfiguration graphConfig, StandardTitanGraph graph, Configuration customOptions) {
@@ -102,12 +126,27 @@ public class StandardTransactionBuilder implements TransactionConfiguration, Tra
         this.assignIDsImmediately = graphConfig.hasFlushIDs();
         this.forceIndexUsage = graphConfig.hasForceIndexUsage();
         this.groupName = graphConfig.getMetricsPrefix();
+
         this.logIdentifier = null;
         this.propertyPrefetching = graphConfig.hasPropertyPrefetching();
         this.writableCustomOptions = null;
         this.customOptions = customOptions;
         vertexCacheSize(graphConfig.getTxVertexCacheSize());
         dirtyVertexSize(graphConfig.getTxDirtyVertexSize());
+
+
+        // KAFKA PRODUCER
+        boolean logAll = graphConfig.getLogAllTransactions();
+
+        if (logAll)
+        {
+            this.logIdentifier = graphConfig.getAllLogTransactionName();
+
+        }
+        else
+        {
+            this.logIdentifier = null;
+        }
     }
 
     public StandardTransactionBuilder threadBound() {
