@@ -2,17 +2,6 @@ package com.thinkaurelius.titan.graphdb.transaction;
 
 import static com.thinkaurelius.titan.graphdb.configuration.GraphDatabaseConfiguration.ROOT_NS;
 
-//DAVID KAFKA DEBUG
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
-import java.util.Arrays;
-
 import java.time.Instant;
 import java.util.concurrent.TimeUnit;
 

@@ -1,18 +1,5 @@
 package com.thinkaurelius.titan.graphdb.database;
 
-
-//DAVID KAFKA DEBUG
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
-import java.util.Arrays;
-
-
 import com.carrotsearch.hppc.LongArrayList;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Predicate;
@@ -718,19 +705,6 @@ public class StandardTitanGraph extends TitanBlueprintsGraph {
 
                 String logTxIdentifier = tx.getConfiguration().getLogIdentifier();
                 boolean hasSecondaryPersistence = logTxIdentifier!=null || commitSummary.has2iModifications;
-
-                // TEMPORARY KAFKA DEBUG
-                try  (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("DEBUG.txt", true))))
-                {
-                    out.println("StandardTitanGraph: " + "1");
-                    out.println("logTransaction: " + logTransaction);
-                    out.println("logTxIdentifier: " + logTxIdentifier);
-                    out.println("StandardTitanGraph: " + "1-end");
-                }
-                catch (IOException e)
-                {
-                    e.printStackTrace();
-                }
 
                 //1. Commit storage - failures lead to immediate abort
 

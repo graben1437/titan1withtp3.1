@@ -1,9 +1,13 @@
 This build is based on tp3-ci-31 as of 11/10/2015.
-If you are having trouble building this Titan build, then you probably need to build TinkerPop 3.1 (master branch) first
-in order to install the appropriate jars in your maven repository.
+
+You should be sure to build the latest TinkerPop 3.1-SNAPSHOT (master branch) first in order to have those
+jars available for this Titan build.
 
 It has not been extensively tested, but works on HBase 1.1.1, Hadoop 2.7.1 and Cassandra 2.1.5.
 SparkGraphComputer was also tested successfully on both databases.
+
+There are code updates in addition to pom.xml file changes, that include updates to code to support
+HBase 1.1.1 and to pre-install the gremlin-spark plug-in into the Gremlin shell.
 
 The build also runs on Hadoop 2.6.0, but has to be recompiled with that level of support, otherwise
 read errors occur.
@@ -17,6 +21,10 @@ the fact that my cluster has Yarn, and TinkerPop 3.1 does not implement the Grap
 implementation in the GiraphGraphComputer.  GiraphGraphComputer runs fine on a single
 node installation.
 
+The Kafka publisher code was upgraded to work with this build, although on deletes,
+the publisher may generate exceptions.  There are some additional upgrades needed to the code
+which are in progress.
+
 HBase has an intermittent problem shown below.
 This problem has been reported both on the Titan forums as well as the HBase forums in the past
 and is the result of a guava version mismatch.
@@ -27,7 +35,3 @@ and is the result of a guava version mismatch.
     at org.apache.hadoop.hbase.zookeeper.MetaTableLocator.blockUntilAvailable(MetaTableLocator.java:580)
     at org.apache.hadoop.hbase.zookeeper.MetaTableLocator.blockUntilAvailable(MetaTableLocator.java:559)
 ```
-
-There are some minor code updates in addition to pom.xml file changes.
-In addition, this build contains (slightly broken) kakfa publisher capability that was published (and worked)
-in a separate build.  The kafka work will continue to be upgraded.
