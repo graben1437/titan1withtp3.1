@@ -71,6 +71,13 @@ Defines the user log name used by the Titan logging system when recording all tr
 This value is also used by the Kafka Listener/Producer to register with the appropriate change log in Titan.
 ```
 
+```
+tx.log-tx=true
+
+This parameter is not new.  But don't forget to set it to enable logging.  It must be set to true
+when the data store is initially created
+```
+
 **4)** Update the **producer.properties** file.
 
 Under your Titan build, navigate to the ../titan-kafka/src/main/resources subdirectory.
@@ -115,7 +122,7 @@ Follow the instructions in the Kafka documentation to start all of your brokers 
 Typically, you can issue the following command from the $KAFKA_HOME/bin directory once the server.properties
 file is appropriately configured for your environment:
 
-``./kafka-server-start.sh ../config/server.properties`
+`./kafka-server-start.sh ../config/server.properties`
 
 **7)** Create the Titan-Kafka topic.
 
