@@ -1,9 +1,9 @@
 This build is based on tp3-ci-31 as of 11/10/2015.
 
-You should be sure to build the latest TinkerPop 3.1-SNAPSHOT (master branch) first in order to have those
-jars available for this Titan build.
+Build the latest TinkerPop 3.1-SNAPSHOT (master branch) first in order to have those
+jars available in your maven repository for this Titan build.
 
-It has not been extensively tested, but works on HBase 1.1.1, Hadoop 2.7.1 and Cassandra 2.1.5.
+This build works for HBase 1.1.1, Hadoop 2.7.1 and Cassandra 2.1.5.
 SparkGraphComputer was also tested successfully on both databases.
 
 There are code updates in addition to pom.xml file changes, that include updates to code to support
@@ -12,7 +12,7 @@ HBase 1.1.1 and to pre-install the gremlin-spark plug-in into the Gremlin shell.
 The build also runs on Hadoop 2.6.0, but has to be recompiled with that level of support, otherwise
 read errors occur.
 
-May packages used by Titan were updated to match newer versions already used in TinkerPop 3.1.
+Many packages used by Titan were updated to match newer versions already used in TinkerPop 3.1.
 
 Support of HBase versions prior to HBase 1.0 were dropped, as was support for Hadoop 1.
 
