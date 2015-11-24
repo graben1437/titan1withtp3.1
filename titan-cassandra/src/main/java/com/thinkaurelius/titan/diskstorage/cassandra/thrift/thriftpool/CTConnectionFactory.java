@@ -1,6 +1,8 @@
 package com.thinkaurelius.titan.diskstorage.cassandra.thrift.thriftpool;
 
 import org.apache.cassandra.auth.IAuthenticator;
+// DAVID CASSANDRA
+import org.apache.cassandra.auth.PasswordAuthenticator;
 import org.apache.cassandra.thrift.*;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.pool.KeyedPoolableObjectFactory;
@@ -90,8 +92,10 @@ public class CTConnectionFactory implements KeyedPoolableObjectFactory<String, C
 
         if (cfg.username != null) {
             Map<String, String> credentials = new HashMap<String, String>() {{
-                put(IAuthenticator.USERNAME_KEY, cfg.username);
-                put(IAuthenticator.PASSWORD_KEY, cfg.password);
+                // DAVID CASSANDRA
+                put(PasswordAuthenticator.USERNAME_KEY, cfg.username);
+                // DAVID CASSANDRA
+                put(PasswordAuthenticator.PASSWORD_KEY, cfg.password);
             }};
 
             try {

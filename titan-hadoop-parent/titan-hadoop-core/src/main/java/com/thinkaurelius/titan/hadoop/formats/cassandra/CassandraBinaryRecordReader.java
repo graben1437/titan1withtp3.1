@@ -55,11 +55,16 @@ public class CassandraBinaryRecordReader extends RecordReader<StaticBuffer, Iter
                 incompleteKV = null;
             } else {
                 StaticArrayBuffer key = StaticArrayBuffer.of(reader.getCurrentKey());
-                SortedMap<ByteBuffer, Cell> valueSortedMap = reader.getCurrentValue();
+
+                // DAVID CASSANDRA
+                // SortedMap<ByteBuffer, Cell> valueSortedMap = reader.getCurrentValue();
+                SortedMap<ByteBuffer, ColumnFamilyRecordReader.Column> valueSortedMap = reader.getCurrentValue();
+
                 List<Entry> entries = new ArrayList<>(valueSortedMap.size());
-                for (Map.Entry<ByteBuffer, Cell> ent : valueSortedMap.entrySet()) {
+                // DAVID CASSANDRA
+                for (Map.Entry<ByteBuffer, ColumnFamilyRecordReader.Column> ent : valueSortedMap.entrySet()) {
                     ByteBuffer col = ent.getKey();
-                    ByteBuffer val = ent.getValue().value();
+                    ByteBuffer val = ent.getValue().value;
                     entries.add(StaticArrayEntry.of(StaticArrayBuffer.of(col), StaticArrayBuffer.of(val)));
                 }
 

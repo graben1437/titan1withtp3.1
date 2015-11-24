@@ -21,6 +21,10 @@ import org.apache.cassandra.db.composites.Composite;
 import org.apache.cassandra.db.filter.IDiskAtomFilter;
 import org.apache.cassandra.db.filter.SliceQueryFilter;
 import org.apache.cassandra.dht.*;
+// DAVID CASSANDRA - ADDED THIS IMPORT 
+import org.apache.cassandra.dht.ByteOrderedPartitioner.BytesToken;
+// DAVID CASSANDRA - ADDED THIS IMPORT
+import org.apache.cassandra.dht.RandomPartitioner.BigIntegerToken;
 import org.apache.cassandra.exceptions.InvalidRequestException;
 import org.apache.cassandra.exceptions.IsBootstrappingException;
 import org.apache.cassandra.exceptions.RequestTimeoutException;
@@ -121,8 +125,13 @@ public class CassandraEmbeddedKeyColumnValueStore implements KeyColumnValueStore
         /* Note: we need to fetch columns for each row as well to remove "range ghosts" */
         SlicePredicate predicate = new SlicePredicate().setSlice_range(columnSlice);
 
-        RowPosition startPosition = start.minKeyBound(partitioner);
-        RowPosition endPosition = end.minKeyBound(partitioner);
+        // DAVID CASSANDRA
+        // Old cassandra code did not use partitioner anyway in this call...so new code removed it as a parmaeter
+        // RowPosition startPosition = start.minKeyBound(partitioner);
+        RowPosition startPosition = start.minKeyBound();
+        // DAVID CASSANDRA
+        // RowPosition endPosition = end.minKeyBound(partitioner);
+        RowPosition endPosition = end.minKeyBound();
 
         List<Row> rows;
 
@@ -516,7 +525,8 @@ public class CassandraEmbeddedKeyColumnValueStore implements KeyColumnValueStore
         if (partitioner instanceof RandomPartitioner) {
             return new BigIntegerToken(RandomPartitioner.MAXIMUM);
         } else if (partitioner instanceof Murmur3Partitioner) {
-            return new LongToken(Murmur3Partitioner.MAXIMUM);
+            // DAVID CASSANDRA
+            return new Murmur3Partitioner.LongToken(Murmur3Partitioner.MAXIMUM);
         } else if (partitioner instanceof ByteOrderedPartitioner) {
             //TODO: This makes the assumption that its an EdgeStore (i.e. 8 byte keys)
             return new BytesToken(com.thinkaurelius.titan.diskstorage.util.ByteBufferUtil.oneByteBuffer(8));

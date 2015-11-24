@@ -12,6 +12,8 @@ import com.thinkaurelius.titan.diskstorage.cassandra.thrift.thriftpool.CTConnect
 import com.thinkaurelius.titan.diskstorage.cassandra.utils.CassandraHelper;
 import com.thinkaurelius.titan.diskstorage.keycolumnvalue.*;
 import com.thinkaurelius.titan.diskstorage.util.*;
+// DAVID CASSANDRA ADDED THIS IMPORT 
+import org.apache.cassandra.dht.ByteOrderedPartitioner.BytesToken;
 import org.apache.cassandra.dht.*;
 import org.apache.cassandra.thrift.*;
 import org.apache.cassandra.thrift.ConsistencyLevel;
@@ -217,7 +219,8 @@ public class CassandraThriftKeyColumnValueStore implements KeyColumnValueStore {
         final IPartitioner partitioner = storeManager.getCassandraPartitioner();
 
         // see rant about the reason of this limitation in Astyanax implementation of this method.
-        if (!(partitioner instanceof AbstractByteOrderedPartitioner))
+        // DAVID CASSANDRA if (!(partitioner instanceof AbstractByteOrderedPartitioner))
+        if (!(partitioner instanceof ByteOrderedPartitioner))
             throw new PermanentBackendException("This operation is only allowed when byte-ordered partitioner is used.");
 
         try {
@@ -522,7 +525,8 @@ public class CassandraThriftKeyColumnValueStore implements KeyColumnValueStore {
                 int pageSize, ByteBuffer startKey, ByteBuffer endKey) throws BackendException {
             super(partitioner, columnSlice, pageSize, partitioner.getToken(startKey), partitioner.getToken(endKey), true);
 
-            Preconditions.checkArgument(partitioner instanceof AbstractByteOrderedPartitioner);
+            // DAVID CASSANDRA
+            Preconditions.checkArgument(partitioner instanceof ByteOrderedPartitioner);
 
             // Get first slice with key range instead of token range. Token
             // ranges are start-exclusive, key ranges are start-inclusive. Both
