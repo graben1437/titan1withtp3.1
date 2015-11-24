@@ -3,7 +3,7 @@ This build is based on tp3-ci-31 as of 11/10/2015.
 Build the latest TinkerPop 3.1-SNAPSHOT (master branch) first in order to have those
 jars available in your maven repository for this Titan build.
 
-This build works for HBase 1.1.1, Hadoop 2.7.1 and Cassandra 2.1.5.
+This build works for HBase 1.1.1, Hadoop 2.7.1 and Cassandra 2.2.3.
 SparkGraphComputer was also tested successfully on both databases.
 
 There are code updates in addition to pom.xml file changes, that include updates to code to support
