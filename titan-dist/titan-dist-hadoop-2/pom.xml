@@ -143,8 +143,7 @@
                         </executions>
                     </plugin>
 
-                    <!-- DAVID COMMENTED OUT BECAUSE BROKEN -->
-                    <!-- <plugin>
+                    <plugin>
                         <groupId>org.codehaus.mojo</groupId>
                         <artifactId>exec-maven-plugin</artifactId>
                         <executions>
@@ -181,7 +180,7 @@
                                 </configuration>
                             </execution>
                         </executions>
-                    </plugin> -->
+                    </plugin>
                 </plugins>
             </build>
         </profile>
