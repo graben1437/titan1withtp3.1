@@ -1,16 +1,24 @@
+This readme is current as of 12/2/2015.
+
 This build is based on tp3-ci-31 as of 11/10/2015.
 
 Build the latest TinkerPop 3.1-SNAPSHOT (master branch) first in order to have those
 jars available in your maven repository for this Titan build.
 
-This build works for HBase 1.1.1, Hadoop 2.7.1 and Cassandra 2.2.3.
-SparkGraphComputer was also tested successfully on both databases.
+This Titan build works for:
+TinkerPop 3.1
+HBase 1.1.1, 
+Hadoop 2.7.1
+Cassandra 2.2.3
+This build also was tested on HDFS 2.6.0, but has to be recompiled at that version
+level before it can be used.
+
+Work is underway to get SparkGraphComputer, Giraph, Faunus working also and 
+that work will be pushed to this repo when ready.
+
 
 There are code updates in addition to pom.xml file changes, that include updates to code to support
 HBase 1.1.1 and to pre-install the gremlin-spark plug-in into the Gremlin shell.
-
-The build also runs on Hadoop 2.6.0, but has to be recompiled with that level of support, otherwise
-read errors occur.
 
 Many packages used by Titan were updated to match newer versions already used in TinkerPop 3.1.
 
@@ -22,12 +30,13 @@ implementation in the GiraphGraphComputer.  GiraphGraphComputer runs fine on a s
 node installation.
 
 The Kafka publisher code was upgraded to work with this build, although on deletes,
-the publisher may generate exceptions.  There are some additional upgrades needed to the code
-which are in progress.
+the publisher may generate exceptions.  That will be fixed and pushed to this build.
+Exactly how to package the Kafka work without forcing Kafka jar files into the Titan
+lib is being figured out.
 
-HBase has an intermittent problem shown below.
-This problem has been reported both on the Titan forums as well as the HBase forums in the past
-and is the result of a guava version mismatch.
+The following problem, caused by HBase using a very old (version 12) of guava, should
+be solved.  I backed off the Titan guava level to version 16 (from the latest version, which is 18).
+This problem seems to have gone away with 16...although I'll keep looking for it:
 
 ```
     Caused by: java.lang.IllegalAccessError: tried to access method com.google.common.base.Stopwatch.<init>()V from class org.apache.hadoop.hbase.zookeeper.MetaTableLocator
