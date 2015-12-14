@@ -11,10 +11,11 @@ Build TinkerPop 3.1-incubating (master branch) first in order to have those
 jars available in your maven repository for this Titan build.
 
 This Titan build works for:
-TinkerPop 3.1
-HBase 1.1.1, 
-Hadoop 2.7.1
-Cassandra 2.2.3$a
+
+- TinkerPop 3.1
+- HBase 1.1.1, 
+- Hadoop 2.7.1
+- Cassandra 2.2.3
 
 This build also was tested on HDFS 2.6.0, but has to be recompiled at that version
 level before it can be used.
