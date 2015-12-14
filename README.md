@@ -7,7 +7,7 @@ and should see markers with pull request numbers for most of the changes.
 
 This build also includes Titan pull requests 1195 and 1197.
 
-Build the latest TinkerPop 3.1-SNAPSHOT (master branch) first in order to have those
+Build TinkerPop 3.1-incubating (master branch) first in order to have those
 jars available in your maven repository for this Titan build.
 
 This Titan build works for:
