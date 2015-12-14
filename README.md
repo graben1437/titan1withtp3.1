@@ -1,6 +1,10 @@
-This readme is current as of 12/2/2015.
+This readme is current as of 12/14/2015.
 
 This build is based on tp3-ci-31 as of 11/10/2015.
+May of these changes have been submitted to the main titan 3.1 stream as pull requests,
+but at this point in time, they have not been pulled in.
+
+This build also includes Titan pull requests 1195 and 1197.
 
 Build the latest TinkerPop 3.1-SNAPSHOT (master branch) first in order to have those
 jars available in your maven repository for this Titan build.
@@ -9,7 +13,8 @@ This Titan build works for:
 TinkerPop 3.1
 HBase 1.1.1, 
 Hadoop 2.7.1
-Cassandra 2.2.3
+Cassandra 2.2.3$a
+
 This build also was tested on HDFS 2.6.0, but has to be recompiled at that version
 level before it can be used.
 
