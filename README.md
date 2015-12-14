@@ -1,6 +1,7 @@
 This readme is current as of 12/14/2015.
 
 This build is based on tp3-ci-31 as of 11/10/2015.
+
 Many of the changes in this build are submitted to the main titan 3.1 stream as pull requests,
 but at this point in time, they have not been pulled in. You can look in the poms and code
 and should see markers with pull request numbers for most of the changes.
@@ -19,6 +20,12 @@ This Titan build works for:
 
 This build also was tested on HDFS 2.6.0, but has to be recompiled at that version
 level before it can be used.
+
+** NOTE: because of changes in Cassandra between 2.1 and 2.2, where they apparently made
+no effort to be backwards compatible, the astynax driver no longer works.  The latest
+build tree for astynax shows it supports Cassandra 2.0.x.  So...if you try to use
+astynax with Cassandra, with this build, it will not work.  You must use thrift.
+I am trying to figure out exactly what we could do on this topic.
 
 Work is underway to get SparkGraphComputer, Giraph, Faunus working also and 
 that work will be pushed to this repo when ready.
