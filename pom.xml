@@ -68,23 +68,23 @@
         <metrics2.version>2.1.2</metrics2.version>
         <metrics3.version>3.0.1</metrics3.version>
         <sesame.version>2.7.10</sesame.version>
-        <!-- DAVID upgraded from 1.7.5 -->
+        <!-- DAVID upgraded from 1.7.5 pull request #1208 -->
         <slf4j.version>1.7.12</slf4j.version>
         <httpcomponents.version>4.4.1</httpcomponents.version>
         <!-- DAVID <hadoop1.version>1.2.1</hadoop1.version> -->
         <hadoop2.version>2.7.1</hadoop2.version>
         <!-- DAVID <hbase094.version>0.94.25</hbase094.version>
-        <hbase096.core.version>0.96.2</hbase096.core.version>
-        <hbase096.version>${hbase096.core.version}-hadoop2</hbase096.version>
-        <hbase098.core.version>0.98.2</hbase098.core.version>
-        <hbase098.version>${hbase098.core.version}-hadoop2</hbase098.version> -->
+        DAVID <hbase096.core.version>0.96.2</hbase096.core.version> 
+        DAVID <hbase096.version>${hbase096.core.version}-hadoop2</hbase096.version>
+        DAVID <hbase098.core.version>0.98.2</hbase098.core.version>
+        DAVID <hbase098.version>${hbase098.core.version}-hadoop2</hbase098.version> -->
         <hbase100.core.version>1.0.2</hbase100.core.version>
         <hbase100.version>${hbase100.core.version}</hbase100.version> 
         <!-- DAVID ADDED LINE BELOW -->
         <hbase111.version>1.1.1</hbase111.version>
-        <!-- DAVID upgraded from 1.9.2 -->
+        <!-- DAVID upgraded from 1.9.2 pull request #1210 -->
         <jackson1.version>1.9.13</jackson1.version>
-        <!-- DAVID upgraded from 2.3.0 -->
+        <!-- DAVID upgraded from 2.3.0 pull request #1210 -->
         <jackson2.version>2.4.4</jackson2.version>
         <!-- ES depends on Lucene.  This ES dependency can affect the
              version used by the titan-lucene module.  When updating
@@ -100,8 +100,8 @@
         <asm3.version>3.1</asm3.version>
         <asm4.version>4.0</asm4.version>
         <zookeeper.version>3.4.6</zookeeper.version>
-        <!-- DAVID upgraded from 1.18.2 -->
-        <jersey.version>1.9</jersey.version>
+        <!-- DAVID upgraded from 1.18.2 pull request #1211 -->
+        <jersey.version>1.19</jersey.version>
         <jna.version>4.0.0</jna.version>
         <kuali.s3.wagon.version>1.1.20</kuali.s3.wagon.version>
         <jasper.version>5.5.23</jasper.version>
@@ -130,7 +130,7 @@
         <module>titan-hbase-parent</module>
         <module>titan-es</module>
         <module>titan-lucene</module>
-        <!-- DAVID removed from build tree -->
+        <!-- DAVID removed from build tree #1207 pull request -->
         <!-- <module>titan-rexster</module> -->
         <module>titan-all</module>
         <module>titan-dist</module>
@@ -564,7 +564,7 @@
             <dependency>
                 <groupId>org.yaml</groupId>
                 <artifactId>snakeyaml</artifactId>
-                <!-- DAVID upgraded from 1.11 -->
+                <!-- DAVID upgraded from 1.11 pull request #1209 -->
                 <version>1.15</version>
             </dependency>
             <dependency>
@@ -605,7 +605,7 @@
             <dependency>
                 <groupId>log4j</groupId>
                 <artifactId>log4j</artifactId>
-                <!-- DAVID upgraded from 1.2.16 -->
+                <!-- DAVID upgraded from 1.2.16 pull request #1212 -->
                 <version>1.2.17</version>
             </dependency>
             <dependency>
@@ -685,7 +685,7 @@
             <dependency>
                 <groupId>io.netty</groupId>
                 <artifactId>netty-all</artifactId>
-                <!-- DAVID upgraded from 4.0.25.Final -->
+                <!-- DAVID upgraded from 4.0.25.Final pull request #1213-->
                 <version>4.0.29.Final</version>
             </dependency>
 
@@ -772,14 +772,14 @@
             <dependency>
                 <groupId>jline</groupId>
                 <artifactId>jline</artifactId>
-                <!-- DAVID upgraded from 2.11 -->
+                <!-- DAVID upgraded from 2.11 pull request #1214 -->
                 <version>2.12</version>
             </dependency>
             <!-- Force newer Snappy-java because 1.4.0.1 is broken on Mac OS X with JDK 7 -->
             <dependency>
                 <groupId>org.xerial.snappy</groupId>
                 <artifactId>snappy-java</artifactId>
-                <!-- DAVID upgraded from 1.0.5-M3 -->
+                <!-- DAVID upgraded from 1.0.5-M3 pull request #1215 -->
                 <version>1.1.1.7</version>
             </dependency>
             <dependency>
@@ -793,7 +793,7 @@
                 -->
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>
-                <!-- DAVID - bumped version down -->
+                <!-- DAVID - bumped version down pull requst #1216 -->
                 <version>16.0.1</version>
             </dependency>
             <dependency>
@@ -819,7 +819,7 @@
             <dependency>
                 <groupId>io.netty</groupId>
                 <artifactId>netty</artifactId>
-                <!-- DAVID upgraded from 3.6.6.Final -->
+                <!-- DAVID upgraded from 3.6.6.Final pull request #1217 -->
                 <version>3.8.0.Final</version>
             </dependency>
 
