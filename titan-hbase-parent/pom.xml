@@ -18,6 +18,7 @@
         <module>titan-hbase-096</module>
         <module>titan-hbase-098</module>  -->
         <module>titan-hbase-10</module>  
+        <-- DAVID added. pull request #1219 -->
         <module>titan-hbase-11</module>
         <module>titan-hbase</module>
     </modules>

@@ -33,7 +33,7 @@ public class HBaseCompatLoader {
         } else {
             String hbaseVersion = VersionInfo.getVersion();
             System.out.println("hbaseVersion is: " + hbaseVersion);
-            // DAVID Added 1.1 into the supported list
+            // DAVID Added 1.1 into the supported list pull request #1219
             for (String supportedVersion : Arrays.asList("0.94", "0.96", "0.98", "1.0", "1.1")) {
                 if (hbaseVersion.startsWith(supportedVersion + ".")) {
                     className = "com.thinkaurelius.titan.diskstorage.hbase.HBaseCompat" + supportedVersion.replaceAll("\\.", "_");
