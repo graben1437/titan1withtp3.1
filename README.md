@@ -1,8 +1,9 @@
 This readme is current as of 12/14/2015.
 
 This build is based on tp3-ci-31 as of 11/10/2015.
-May of these changes have been submitted to the main titan 3.1 stream as pull requests,
-but at this point in time, they have not been pulled in.
+Many of the changes in this build are submitted to the main titan 3.1 stream as pull requests,
+but at this point in time, they have not been pulled in. You can look in the poms and code
+and should see markers with pull request numbers for most of the changes.
 
 This build also includes Titan pull requests 1195 and 1197.
 
