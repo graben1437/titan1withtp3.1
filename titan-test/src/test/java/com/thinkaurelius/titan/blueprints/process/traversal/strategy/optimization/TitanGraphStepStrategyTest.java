@@ -1,19 +1,29 @@
 package com.thinkaurelius.titan.blueprints.process.traversal.strategy.optimization;
 
+import com.thinkaurelius.titan.blueprints.InMemoryGraphProvider;
+import com.thinkaurelius.titan.core.TitanGraph;
 import com.thinkaurelius.titan.graphdb.tinkerpop.optimize.TitanGraphStep;
+
 import org.apache.tinkerpop.gremlin.process.AbstractGremlinProcessTest;
 import org.apache.tinkerpop.gremlin.process.IgnoreEngine;
 import org.apache.tinkerpop.gremlin.process.traversal.P;
+import org.apache.tinkerpop.gremlin.GraphProviderClass;
+import org.apache.tinkerpop.gremlin.process.ProcessStandardSuite;
 import org.apache.tinkerpop.gremlin.process.traversal.TraversalEngine;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 import org.apache.tinkerpop.gremlin.process.traversal.step.filter.HasStep;
+
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import static org.junit.Assert.assertEquals;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
+ * DAVID Annotations added to get this to work.  Pull requst  #1220 
  */
+@RunWith(ProcessStandardSuite.class)
+@GraphProviderClass(provider = InMemoryGraphProvider.class, graph = TitanGraph.class)
 public class TitanGraphStepStrategyTest extends AbstractGremlinProcessTest {
 
     @Test
