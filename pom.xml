@@ -793,8 +793,8 @@
                 -->
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>
-                <!-- DAVID - bumped version down pull requst #1216 -->
-                <version>16.0.1</version>
+                <!-- DAVID - bumped version down pull requst #1216 then bumped it back up and cancelled 1216 -->
+                <version>18.0</version>
             </dependency>
             <dependency>
                 <groupId>commons-lang</groupId>
