@@ -100,8 +100,8 @@
         <asm3.version>3.1</asm3.version>
         <asm4.version>4.0</asm4.version>
         <zookeeper.version>3.4.6</zookeeper.version>
-        <!-- DAVID upgraded from 1.18.2 pull request #1211 then I cancelled this and went to 1.9 to match titan 1.1.0 after testing-->
-        <jersey.version>1.9</jersey.version>
+        <!-- DAVID upgraded from 1.18.2 pull request #1211 then I cancelled this and went to 1.9 to match titan 1.1.0 after testing, then I put this back to where I had it.-->
+        <jersey.version>1.19</jersey.version>
         <jna.version>4.0.0</jna.version>
         <kuali.s3.wagon.version>1.1.20</kuali.s3.wagon.version>
         <jasper.version>5.5.23</jasper.version>
