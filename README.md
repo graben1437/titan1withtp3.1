@@ -1,4 +1,4 @@
-This readme is current as of 12/14/2015.
+This readme is current as of 1/6/2016.
 
 This build is based on tp3-ci-31 as of 11/10/2015.
 
@@ -49,8 +49,9 @@ Exactly how to package the Kafka work without forcing Kafka jar files into the T
 lib is being figured out.
 
 The following problem, caused by HBase using a very old (version 12) of guava, should
-be solved.  I backed off the Titan guava level to version 16 (from the latest version, which is 18).
-This problem seems to have gone away with 16...although I'll keep looking for it:
+be solved. I have a current version of Titan using guava 18.0 that appears to work
+consistently (have not been able to reproduce the stopwatch exception again in one of 
+the environments where it was occurring), but I am not sure why yet.
 
 ```
     Caused by: java.lang.IllegalAccessError: tried to access method com.google.common.base.Stopwatch.<init>()V from class org.apache.hadoop.hbase.zookeeper.MetaTableLocator
