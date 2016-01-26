@@ -16,7 +16,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 import com.google.common.base.Preconditions;
-import com.google.common.base.Stopwatch;
+// DAVID
+import com.google.common.base.StopwatchTitan;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.thinkaurelius.titan.core.TitanException;
 import com.thinkaurelius.titan.diskstorage.BackendException;
@@ -123,7 +124,8 @@ public class StandardIDPool implements IDPool {
     }
 
     private synchronized void waitForIDBlockGetter() throws InterruptedException {
-        Stopwatch sw = Stopwatch.createStarted();
+        // DAVID
+        StopwatchTitan sw = StopwatchTitan.createStarted();
         if (null != idBlockFuture) {
             try {
                 nextBlock = idBlockFuture.get(renewTimeout.toMillis(), TimeUnit.MILLISECONDS);
@@ -244,7 +246,8 @@ public class StandardIDPool implements IDPool {
 
     private static class IDBlockGetter implements Callable<IDBlock> {
 
-        private final Stopwatch alive;
+        // DAVID
+        private final StopwatchTitan alive;
         private final IDAuthority idAuthority;
         private final int partition;
         private final int idNamespace;
@@ -256,7 +259,8 @@ public class StandardIDPool implements IDPool {
             this.partition = partition;
             this.idNamespace = idNamespace;
             this.renewTimeout = renewTimeout;
-            this.alive = Stopwatch.createStarted();
+            // DAVID
+            this.alive = StopwatchTitan.createStarted();
         }
 
         private void stopRequested()
@@ -266,7 +270,8 @@ public class StandardIDPool implements IDPool {
 
         @Override
         public IDBlock call() {
-            Stopwatch running = Stopwatch.createStarted();
+            // DAVID
+            StopwatchTitan running = StopwatchTitan.createStarted();
 
             try {
                 if (stopRequested) {

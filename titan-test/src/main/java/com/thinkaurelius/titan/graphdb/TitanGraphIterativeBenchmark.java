@@ -1,6 +1,7 @@
 package com.thinkaurelius.titan.graphdb;
 
-import com.google.common.base.Stopwatch;
+// DAVID
+import com.google.common.base.StopwatchTitan;
 import com.google.common.collect.Iterators;
 import com.thinkaurelius.titan.core.PropertyKey;
 import com.thinkaurelius.titan.core.TitanEdge;
@@ -49,7 +50,8 @@ public abstract class TitanGraphIterativeBenchmark extends TitanGraphBaseTest {
         KeyColumnValueStore store = manager.openDatabase(Backend.EDGESTORE_NAME);
         SliceQuery query = new SliceQuery(BufferUtil.zeroBuffer(8),BufferUtil.oneBuffer(8));
         query.setLimit(2);
-        Stopwatch watch = Stopwatch.createStarted();
+        // DAVID
+        StopwatchTitan watch = StopwatchTitan.createStarted();
         StoreTransaction txh = manager.beginTransaction(StandardBaseTransactionConfig.of(TimestampProviders.MILLI));
         KeyIterator iter = store.getKeys(query,txh);
         int numV = 0;
