@@ -9,6 +9,8 @@ import org.apache.hadoop.hbase.mapreduce.TableRecordReader;
 import org.apache.hadoop.mapreduce.InputSplit;
 import org.apache.hadoop.mapreduce.RecordReader;
 import org.apache.hadoop.mapreduce.TaskAttemptContext;
+import org.apache.hadoop.hbase.io.ImmutableBytesWritable;
+import org.apache.hadoop.hbase.client.Result;
 
 import java.io.IOException;
 import java.util.Iterator;
@@ -17,11 +19,15 @@ import java.util.NavigableMap;
 
 public class HBaseBinaryRecordReader  extends RecordReader<StaticBuffer, Iterable<Entry>> {
 
-    private TableRecordReader reader;
+    // DAVID
+    // private TableRecordReader reader;
+    private RecordReader reader;
 
     private final byte[] edgestoreFamilyBytes;
 
-    public HBaseBinaryRecordReader(final TableRecordReader reader, final byte[] edgestoreFamilyBytes) {
+    // DAVID
+    // public HBaseBinaryRecordReader(final TableRecordReader reader, final byte[] edgestoreFamilyBytes) {
+    public HBaseBinaryRecordReader(final RecordReader reader, final byte[] edgestoreFamilyBytes) {
         this.reader = reader;
         this.edgestoreFamilyBytes = edgestoreFamilyBytes;
     }
@@ -36,14 +42,22 @@ public class HBaseBinaryRecordReader  extends RecordReader<StaticBuffer, Iterabl
         return reader.nextKeyValue();
     }
 
+    // ImmutableBytesWritable getCurrentKey() 
+    // public byte[] copyBytes() {
     @Override
     public StaticBuffer getCurrentKey() throws IOException, InterruptedException {
-        return StaticArrayBuffer.of(reader.getCurrentKey().copyBytes());
+        ImmutableBytesWritable ibw = (ImmutableBytesWritable)reader.getCurrentKey();
+        StaticArrayBuffer sab = StaticArrayBuffer.of(ibw.copyBytes());
+        return sab;
+        // return StaticArrayBuffer.of(trb.getCurrentKey().copyBytes());
     }
 
     @Override
     public Iterable<Entry> getCurrentValue() throws IOException, InterruptedException {
-        return new HBaseMapIterable(reader.getCurrentValue().getMap().get(edgestoreFamilyBytes));
+        Result result = (Result)reader.getCurrentValue();
+        NavigableMap<byte[],NavigableMap<byte[],NavigableMap<Long,byte[]>>> nm = result.getMap();
+        return new HBaseMapIterable(nm.get(edgestoreFamilyBytes));
+        // return new HBaseMapIterable(reader.getCurrentValue().getMap().get(edgestoreFamilyBytes));
     }
 
     @Override
@@ -52,7 +66,9 @@ public class HBaseBinaryRecordReader  extends RecordReader<StaticBuffer, Iterabl
     }
 
     @Override
-    public float getProgress() {
+    // DAVID
+    // public float getProgress() {
+    public float getProgress() throws IOException, InterruptedException {
         return this.reader.getProgress();
     }
 

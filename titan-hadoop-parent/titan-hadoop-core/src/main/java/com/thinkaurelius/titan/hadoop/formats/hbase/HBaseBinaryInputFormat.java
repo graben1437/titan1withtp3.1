@@ -14,7 +14,8 @@ import org.apache.hadoop.hbase.client.Scan;
 import org.apache.hadoop.hbase.filter.Filter;
 import org.apache.hadoop.hbase.mapreduce.TableInputFormat;
 import org.apache.hadoop.hbase.mapreduce.TableMapReduceUtil;
-import org.apache.hadoop.hbase.mapreduce.TableRecordReader;
+// DAVID
+// import org.apache.hadoop.hbase.mapreduce.TableRecordReader;
 import org.apache.hadoop.hbase.util.Bytes;
 import org.apache.hadoop.mapreduce.InputSplit;
 import org.apache.hadoop.mapreduce.JobContext;
@@ -32,7 +33,9 @@ public class HBaseBinaryInputFormat extends AbstractBinaryInputFormat {
     private static final Logger log = LoggerFactory.getLogger(HBaseBinaryInputFormat.class);
 
     private final TableInputFormat tableInputFormat = new TableInputFormat();
-    private TableRecordReader tableReader;
+    // DAVID
+    // private TableRecordReader tableReader;
+    private RecordReader tableReader;
     private byte[] inputCFBytes;
     private RecordReader<StaticBuffer, Iterable<Entry>> titanRecordReader;
 
@@ -44,9 +47,11 @@ public class HBaseBinaryInputFormat extends AbstractBinaryInputFormat {
     @Override
     public RecordReader<StaticBuffer, Iterable<Entry>> createRecordReader(final InputSplit inputSplit, final TaskAttemptContext taskAttemptContext) throws IOException, InterruptedException {
         tableReader =
-                (TableRecordReader) tableInputFormat.createRecordReader(inputSplit, taskAttemptContext);
-        titanRecordReader =
-                new HBaseBinaryRecordReader(tableReader, inputCFBytes);
+                // DAVID
+                // (TableRecordReader) tableInputFormat.createRecordReader(inputSplit, taskAttemptContext);
+                (RecordReader) tableInputFormat.createRecordReader(inputSplit, taskAttemptContext);
+        // DAVID
+        titanRecordReader = new HBaseBinaryRecordReader(tableReader, inputCFBytes);
         return titanRecordReader;
     }
 
@@ -90,7 +95,9 @@ public class HBaseBinaryInputFormat extends AbstractBinaryInputFormat {
         this.tableInputFormat.setConf(config);
     }
 
-    public TableRecordReader getTableReader() {
+    // DAVID
+    // public TableRecordReader getTableReader() {
+    public RecordReader getTableReader() {
         return tableReader;
     }
 
