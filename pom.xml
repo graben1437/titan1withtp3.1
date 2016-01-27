@@ -60,7 +60,8 @@
     <properties>
         <titan.compatible.versions />
         <!-- DAVID -->
-        <tinkerpop.version>3.1.1-SNAPSHOT</tinkerpop.version>
+        <!-- 3.1.1 doesn't work right now -->
+        <tinkerpop.version>3.1.0-incubating</tinkerpop.version>
         <junit.version>4.12</junit.version>
         <mrunit.version>1.1.0</mrunit.version>
         <!-- DAVID UPGRADED VERSION -->
