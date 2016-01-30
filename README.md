@@ -2,6 +2,13 @@ This readme is current as of 1/26/2016.
 
 This build is based on tp3-ci-31 as of 11/10/2015.
 
+Pull requests also included:
+1250 - for the HBase 1.1.1 support only currently (HBase 1.0 classes not yet changed)
+1238 - (doc change)
+1255 - (doc change)
+1246
+
+
 Many of the changes in this build are submitted to the main titan 3.1 stream as pull requests,
 but at this point in time, many have not been pulled in. You can look in the poms and code
 and should see markers with pull request numbers for most of the changes.  I've tried to
