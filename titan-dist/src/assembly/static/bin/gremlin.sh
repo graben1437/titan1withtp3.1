@@ -111,4 +111,6 @@ if [ -n "$SCRIPT_DEBUG" ]; then
 fi
 
 # Start the JVM, execute the application, and return its exit code
+# uncomment this and fix the hadoop version for your environment to use GiraphGraphComputer
+JAVA_OPTIONS="$JAVA_OPTIONS -Dhdp.version=2.3.0.0-2557"
 exec $JAVA $JAVA_OPTIONS $MAIN_CLASS "$@"
