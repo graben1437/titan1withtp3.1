@@ -42,7 +42,7 @@ gremlin> graph.close()
 ==>null
 gremlin> hdfs.copyFromLocal('data/grateful-dead.kryo','data/grateful-dead.kryo')
 ==>null
-gremlin> graph = GraphFactory.open('conf/hadoop-graph/hadoop-load.properties')
+gremlin> graph = GraphFactory.open('conf/hadoop/hadoop-load.properties')
 ==>hadoopgraph[gryoinputformat->nulloutputformat]
 gremlin> blvp = BulkLoaderVertexProgram.build().writeGraph('conf/titan-cassandra.properties').create(graph)
 ==>BulkLoaderVertexProgram[bulkLoader=IncrementalBulkLoader,vertexIdProperty=bulkLoader.vertex.id,userSuppliedIds=false,keepOriginalIds=true,batchSize=0]
@@ -62,10 +62,8 @@ gremlin>
 gremlin.graph=org.apache.tinkerpop.gremlin.hadoop.structure.HadoopGraph
 gremlin.hadoop.graphInputFormat=org.apache.tinkerpop.gremlin.hadoop.structure.io.gryo.GryoInputFormat
 gremlin.hadoop.graphOutputFormat=org.apache.hadoop.mapreduce.lib.output.NullOutputFormat
-gremlin.hadoop.memoryOutputFormat=org.apache.hadoop.mapreduce.lib.output.SequenceFileOutputFormat
 gremlin.hadoop.inputLocation=./data/grateful-dead.kryo
 gremlin.hadoop.outputLocation=output
-gremlin.hadoop.deriveMemory=false
 gremlin.hadoop.jarsInDistributedCache=true
 
 #

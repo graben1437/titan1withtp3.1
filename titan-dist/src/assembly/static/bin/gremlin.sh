@@ -110,6 +110,7 @@ if [ -n "$SCRIPT_DEBUG" ]; then
     set -x
 fi
 
+# DAVID - fix for Giraph
 # FOR GIRAPHGRAPHCOMPUTER: Uncomment this and fix the hadoop version for your environment 
 # JAVA_OPTIONS="$JAVA_OPTIONS -Dhdp.version=2.3.0.0-2557"
 
