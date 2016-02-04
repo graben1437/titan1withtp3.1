@@ -9,12 +9,12 @@ works with Graph Computing - a key feature in TinkerPop 3.X.
 
 Pull requests also included:
 
-*1195
-*1197
-*1250 - for the HBase 1.1.1 support only currently (HBase 1.0 classes not yet changed)
-*1238 - (doc change)
-*1255 - (doc change)
-*1246
+* 1195
+* 1197
+* 1250 - for the HBase 1.1.1 support only currently (HBase 1.0 classes not yet changed)
+* 1238 - (doc change)
+* 1255 - (doc change)
+* 1246
 
 
 Many of the changes in this build are submitted to the main titan 3.1 stream as pull requests
