@@ -4,16 +4,17 @@ This build is still under active development.
 This build looks the closest to what I suggest Titan 1.1.0 should have been.
 
 It eliminates back level HBase/Hadoop, upgrades many of depedency versions,
-includes numerous compatiility fixes, had many document improvements, and
+includes numerous compatiility fixes, has many document improvements, and
 works with Graph Computing - a key feature in TinkerPop 3.X.
 
 Pull requests also included:
-1195
-1197
-1250 - for the HBase 1.1.1 support only currently (HBase 1.0 classes not yet changed)
-1238 - (doc change)
-1255 - (doc change)
-1246
+
+*1195
+*1197
+*1250 - for the HBase 1.1.1 support only currently (HBase 1.0 classes not yet changed)
+*1238 - (doc change)
+*1255 - (doc change)
+*1246
 
 
 Many of the changes in this build are submitted to the main titan 3.1 stream as pull requests
