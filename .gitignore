@@ -1,0 +1,52 @@
+*.log
+target/
+.idea/
+*.iml
+*.DS_Store
+/bin/
+/_bsp/
+/conf/
+/data/
+/db/
+/ext/
+/lib/
+/log/
+/output/
+/scripts/
+# When executing tests in alphabetical order, Maven generates temporary
+# files with names like this:
+#
+#  .surefire-0320969CE4BEF3CC28F07EE3E21C2DCF89CB569C
+#
+# These files appear alongside pom.xml files.  The files are just lists
+# of test names and don't contain any important information.
+/titan-*/.surefire-*
+# Eclipse junk; leading slash makes patterns non-recursive
+# Note that * also can't match slashes
+/.settings/
+/.project
+/.classpath
+/titan-*/.classpath
+/titan-*/.project
+/titan-*/.settings/
+/titan-*/titan-*/.classpath
+/titan-*/titan-*/.project
+/titan-*/titan-*/.settings/
+# End of Eclipse junk
+# HBase testing stuff
+titan-hbase/logs
+titan-hbase/src/test/titan-hbase-test-data/*
+titan-hbase/src/test/titan-zookeeper-test/*
+# Backup files created by `mvn versions:update-child-modules`
+# http://mojo.codehaus.org/versions-maven-plugin/update-child-modules-mojo.html
+titan-*/pom.xml.versionsBackup
+# JUnitBenchmarks output
+/titan-*/jub.*.xml
+# .deb/.rpm packaging folders
+/debian/
+/redhat/
+/pkgcommon/
+# Emacs file backups
+*~
+# Nano file backups
+*.save
