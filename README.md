@@ -1,7 +1,11 @@
-This readme is current as of 2/2/2016.
+This readme is current as of 2/4/2016.
+This build is still under active development.
 
-This build is based on tp3-ci-31 as of 11/10/2015 but is more like Titan 1.1.x based
-on the numerous changes and updates made to the code base.
+This build looks the closest to what I suggest Titan 1.1.0 should have been.
+
+It eliminates back level HBase/Hadoop, upgrades many of depedency versions,
+includes numerous compatiility fixes, had many document improvements, and
+works with Graph Computing - a key feature in TinkerPop 3.X.
 
 Pull requests also included:
 1195
