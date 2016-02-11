@@ -1,4 +1,4 @@
-This readme is current as of 2/4/2016.
+This readme is current as of 2/11/2016.
 This build is still under active development.
 
 This build looks the closest to what I suggest Titan 1.1.0 should have been.
