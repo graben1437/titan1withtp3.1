@@ -22,6 +22,7 @@ Pull requests also included:
 * 1238 - (doc change)
 * 1255 - (doc change)
 * 1246
+* 1258 - LOCAL_ONE support
 
 
 Many of the changes in this build are submitted to the main titan 3.1 stream as pull requests
