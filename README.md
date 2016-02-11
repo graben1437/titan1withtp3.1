@@ -25,6 +25,7 @@ Pull requests also included:
 * 1258 - LOCAL_ONE support
 * 1263 - technically was already fixed in this build, but adding the pull request # as reference
          there are actually several missing/incorrect properties in the sample props files.
+* 1248 - Unicode support, bug fix
 
 
 Many of the changes in this build are submitted to the main titan 3.1 stream as pull requests
