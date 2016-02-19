@@ -60,8 +60,8 @@
     <properties>
         <titan.compatible.versions />
         <!-- DAVID -->
-        <!-- 3.1.1 works with some recent fixes -->
-        <tinkerpop.version>3.1.1-incubating</tinkerpop.version>
+        <!-- 3.1.1 works for spark, not giraph, so at 3.1.0 for now which works for all-->
+        <tinkerpop.version>3.1.0-incubating</tinkerpop.version>
         <junit.version>4.12</junit.version>
         <mrunit.version>1.1.0</mrunit.version>
         <!-- DAVID UPGRADED VERSION -->
